@@ -1,0 +1,56 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#gameControls button, #gameControls input {
+    padding: 10px 15px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+#gameControls input {
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid #ccc;
+}
+
+#bingoBoard {
+    margin-top: 20px;
+}
+
+.bingo-cell {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border: 1px solid #007BFF;
+    display: inline-block;
+    margin: 2px;
+    font-size: 20px;
+    color: #007BFF;
+    background-color: #e1ecf4;
+    cursor: pointer;
+}
+
+.bingo-cell.marked {
+    background-color: #28a745;
+    color: white;
+}
