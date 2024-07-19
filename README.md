@@ -1,6 +1,6 @@
-# Online Bingo Game
+# BINGO
 
-Welcome to the Online Bingo Game! This game allows anywhere from 2 to an infinite number of players to participate in a single game session. Players aim to achieve lines on their bingo cards, with each line completion being marked by the letters B, I, N, G, O. Once a player completes all five lines, they achieve a "BINGO!"
+Welcome to Bingo! This game allows anywhere from 2 to an infinite number of players to participate in a single game session. Players aim to achieve lines on their bingo cards, with each line completion being marked by the letters B, I, N, G, O. Once a player completes all five lines, they achieve a "BINGO!"
 
 ## Technologies Used
 - **Frontend:** HTML, CSS, JavaScript
