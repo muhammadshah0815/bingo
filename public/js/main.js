@@ -2,33 +2,46 @@ const socket = io();
 
 document.getElementById('createGame').addEventListener('click', () => {
     const playerName = document.getElementById('playerNameInput').value.trim();
-    if (playerName) {
+    if (playerName.length > 0 && playerName.length <= 10) {
         socket.emit('create_game', { playerName });
     } else {
-        alert('Please enter your name.');
+        alert('Please enter your name (1-10 characters).');
     }
 });
 
 document.getElementById('joinGame').addEventListener('click', () => {
     const playerName = document.getElementById('playerNameInput').value.trim();
     const gameId = document.getElementById('gameIdInput').value.trim();
-    if (playerName && gameId) {
+    if (playerName.length > 0 && playerName.length <= 10 && gameId) {
         socket.emit('join_game', { gameId, playerName });
     } else {
-        alert('Please enter your name and game code.');
+        alert('Please enter your name (1-10 characters) and game code.');
     }
 });
 
 document.getElementById('gameIdInput').addEventListener('input', () => {
     const playerName = document.getElementById('playerNameInput').value.trim();
     const gameId = document.getElementById('gameIdInput').value.trim();
-    const playerQueue = document.getElementById('playerQueue').children.length;
+    const playerQueue = document.getElementById('playerList').children.length;
     document.getElementById('startGame').disabled = !(playerName && gameId && playerQueue >= 2);
 });
 
 document.getElementById('startGame').addEventListener('click', () => {
     const gameId = document.getElementById('gameIdInput').value.trim();
     socket.emit('start_game', gameId);
+});
+
+document.getElementById('copyGameCode').addEventListener('click', () => {
+    const gameId = document.getElementById('gameIdInput').value.trim();
+    if (gameId) {
+        navigator.clipboard.writeText(gameId).then(() => {
+            alert('Game code copied to clipboard');
+        }).catch(err => {
+            alert('Failed to copy: ', err);
+        });
+    } else {
+        alert('No game code to copy');
+    }
 });
 
 socket.on('game_created', (gameId) => {
@@ -51,10 +64,10 @@ socket.on('player_joined', (data) => {
 
 socket.on('game_started', (players) => {
     document.querySelector('.start-screen').style.display = 'none';
-    document.querySelector('.game-screen').style.display = 'block';
+    document.querySelector('.game-screen').style.display = 'flex';
     document.getElementById('gameStatus').textContent = 'Game has started! Get ready!';
     document.getElementById('bingoBoard').style.display = 'grid';
-    updatePlayerQueue(players);
+    updatePlayerQueue(players, 'playerQueueGame');
     generateBingoBoard();
     const playerName = document.getElementById('playerNameInput').value.trim();
     document.getElementById('playerInfo').textContent = `Player: ${playerName}`;
@@ -72,21 +85,20 @@ socket.on('number_marked', ({ number, markerName }) => {
 
 socket.on('turn_changed', currentTurnPlayer => {
     setTimeout(() => {
-        document.getElementById('currentPlayerName').textContent = currentTurnPlayer;
         highlightCurrentPlayer(currentTurnPlayer);
     }, 0);
 });
 
 socket.on('player_left', data => {
     document.getElementById('gameStatus').textContent = `A player has left the game.`;
-    updatePlayerQueue(data.players);
+    updatePlayerQueue(data.players, 'playerQueueGame');
     updateStartButton();
 });
 
 socket.on('game_ended', message => {
     document.getElementById('gameStatus').textContent = message;
     document.getElementById('bingoBoard').style.display = 'none';
-    document.getElementById('playerQueue').style.display = 'none';
+    document.getElementById('playerQueueGame').style.display = 'none';
 });
 
 socket.on('error', message => {
@@ -96,7 +108,7 @@ socket.on('error', message => {
 function updateStartButton() {
     const playerName = document.getElementById('playerNameInput').value.trim();
     const gameId = document.getElementById('gameIdInput').value.trim();
-    const playerQueue = document.getElementById('playerQueue').children.length;
+    const playerQueue = document.getElementById('playerList').children.length;
     document.getElementById('startGame').disabled = !(playerName && gameId && playerQueue >= 2);
 }
 
@@ -125,9 +137,9 @@ function shuffleArray(array) {
     return array;
 }
 
-function updatePlayerQueue(players) {
-    const queueElement = document.getElementById('playerQueue');
-    queueElement.innerHTML = '<h3>Player Queue:</h3>';
+function updatePlayerQueue(players, queueId = 'playerList') {
+    const queueElement = document.getElementById(queueId);
+    queueElement.innerHTML = '';
     players.forEach(player => {
         const playerElement = document.createElement('div');
         playerElement.textContent = player.name;

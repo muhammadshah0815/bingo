@@ -9,22 +9,35 @@
 <body>
     <div class="container">
         <div class="start-screen">
-            <input type="text" id="playerNameInput" placeholder="Enter Your Name">
+            <div class="bubble-text-box">
+                <input type="text" id="playerNameInput" placeholder="Enter Your Name">
+            </div>
+            <div class="bubble-text-box">
+                <input type="text" id="gameIdInput" placeholder="Enter Game Code">
+                <button id="copyGameCode" class="copy-btn">Copy</button>
+            </div>
             <div id="gameControls">
                 <button id="createGame">Create Game</button>
-                <input type="text" id="gameIdInput" placeholder="Enter Game Code">
                 <button id="joinGame">Join Game</button>
                 <button id="startGame" disabled>Start Game</button>
             </div>
             <div id="playerQueue" class="player-queue-box">
                 <h3>Player Queue:</h3>
+                <div id="playerList"></div>
             </div>
             <div id="gameStatus">Status: Waiting for players...</div>
         </div>
         <div class="game-screen" style="display:none;">
-            <h1 id="currentPlayerName">Bingo Game</h1>
-            <div id="playerInfo"></div>
-            <div id="bingoBoard" style="display:none;"></div>
+            <div class="left-panel">
+                <div id="playerQueueGame" class="player-queue-box">
+                    <h3>Player Queue:</h3>
+                    <div id="playerListGame"></div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div id="bingoBoard" style="display:none;"></div>
+                <div id="playerInfo"></div>
+            </div>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>

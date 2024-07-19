@@ -17,7 +17,37 @@ body, html {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-#gameControls button, #gameControls input {
+.bubble-text-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.bubble-text-box input {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.copy-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ccc;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#gameControls button {
     padding: 10px 15px;
     margin: 10px;
     border-radius: 5px;
@@ -25,12 +55,6 @@ body, html {
     background-color: #007BFF;
     color: white;
     cursor: pointer;
-}
-
-#gameControls input {
-    padding: 10px;
-    margin: 10px;
-    border: 2px solid #ccc;
 }
 
 #bingoBoard {
@@ -63,6 +87,7 @@ body, html {
 .player-queue-box {
     margin-top: 20px;
     text-align: left;
+    margin-right: 20px;
 }
 
 .player-name {
@@ -77,4 +102,24 @@ body, html {
 .player-name.current-turn {
     background-color: #007BFF;
     color: white;
+}
+
+.left-panel {
+    float: left;
+    width: 20%;
+    margin-right: 20px;
+}
+
+.right-panel {
+    float: right;
+    width: 75%;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#playerInfo {
+    margin-top: 20px;
 }
