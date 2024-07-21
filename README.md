@@ -39,3 +39,8 @@ This project was developed as a fun and interactive way for multiple players to 
 
 ## Feedback and Contributions
 Feedback and contributions to the project are welcome! If you have suggestions or find any issues, please submit them via GitHub issues or contact the me at my email (mas292@duke.edu) directly.
+
+## TODO
+- Have each letter from BINGO show up when a line is done.
+- Get a button to show up if you have BINGO
+- Whoever presses first wins
