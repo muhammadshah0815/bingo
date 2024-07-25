@@ -87,7 +87,6 @@ body, html {
 .player-queue-box {
     margin-top: 20px;
     text-align: left;
-    margin-right: 20px;
 }
 
 .player-name {
@@ -107,7 +106,7 @@ body, html {
 .left-panel {
     float: left;
     width: 20%;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .right-panel {
@@ -122,4 +121,16 @@ h1 {
 
 #playerInfo {
     margin-top: 20px;
+}
+
+#bingoButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: none;
 }

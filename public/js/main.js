@@ -81,6 +81,7 @@ socket.on('number_marked', ({ number, markerName }) => {
             cell.removeEventListener('click', cell.clickHandler); // Disable click after marking
         }
     });
+    checkForBingo();
 });
 
 socket.on('turn_changed', currentTurnPlayer => {
@@ -99,10 +100,22 @@ socket.on('game_ended', message => {
     document.getElementById('gameStatus').textContent = message;
     document.getElementById('bingoBoard').style.display = 'none';
     document.getElementById('playerQueueGame').style.display = 'none';
+    alert(message); // Display an alert message to the players
+});
+
+socket.on('bingo_ready', message => {
+    document.getElementById('gameStatus').textContent = message;
+    document.getElementById('bingoButton').style.display = 'block';
 });
 
 socket.on('error', message => {
     alert(message);
+});
+
+document.getElementById('bingoButton').addEventListener('click', () => {
+    const gameId = document.getElementById('gameIdInput').value.trim();
+    const playerName = document.getElementById('playerNameInput').value.trim();
+    socket.emit('bingo_pressed', { gameId, playerName });
 });
 
 function updateStartButton() {
@@ -156,4 +169,50 @@ function highlightCurrentPlayer(currentPlayer) {
             playerElement.classList.add('current-turn');
         }
     });
+}
+
+function checkForBingo() {
+    const boardElement = document.querySelector('#bingoBoard');
+    const cells = boardElement.querySelectorAll('.bingo-cell');
+    const markedCells = [];
+    cells.forEach((cell, index) => {
+        if (cell.classList.contains('marked')) {
+            markedCells.push(index);
+        }
+    });
+
+    const lines = checkLines(markedCells);
+    const playerName = document.getElementById('playerNameInput').value.trim();
+    document.getElementById('bingoLetters').textContent = 'BINGO'.slice(0, lines);
+
+    if (lines >= 5) {
+        const gameId = document.getElementById('gameIdInput').value.trim();
+        socket.emit('update_lines', { gameId, playerName, lines });
+    }
+}
+
+function checkLines(markedCells) {
+    const lines = [
+        [0, 1, 2, 3, 4],
+        [5, 6, 7, 8, 9],
+        [10, 11, 12, 13, 14],
+        [15, 16, 17, 18, 19],
+        [20, 21, 22, 23, 24],
+        [0, 5, 10, 15, 20],
+        [1, 6, 11, 16, 21],
+        [2, 7, 12, 17, 22],
+        [3, 8, 13, 18, 23],
+        [4, 9, 14, 19, 24],
+        [0, 6, 12, 18, 24],
+        [4, 8, 12, 16, 20]
+    ];
+
+    let lineCount = 0;
+    lines.forEach(line => {
+        if (line.every(index => markedCells.includes(index))) {
+            lineCount++;
+        }
+    });
+
+    return lineCount;
 }
