@@ -7,7 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
+// Ensure this path is correct relative to your project structure
+app.use(express.static(path.join(__dirname, '../public')));
 
 const games = {};
 
@@ -17,7 +18,7 @@ io.on('connection', (socket) => {
     socket.on('create_game', ({ playerName }) => {
         let gameId = generateGameId();
         games[gameId] = {
-            players: [{ id: socket.id, name: playerName, lines: 0 }],
+            players: [{ id: socket.id, name: playerName }],
             started: false,
             currentTurn: 0,
             numbers: shuffleArray(Array.from({ length: 25 }, (_, i) => i + 1))
@@ -34,7 +35,7 @@ io.on('connection', (socket) => {
                 socket.emit('error', 'You have already joined this game.');
                 return;
             }
-            games[gameId].players.push({ id: socket.id, name: playerName, lines: 0 });
+            games[gameId].players.push({ id: socket.id, name: playerName });
             socket.join(gameId);
             io.to(gameId).emit('player_joined', { playerId: socket.id, gameId: gameId, players: games[gameId].players });
             io.to(gameId).emit('joined_game', { gameId, players: games[gameId].players });
@@ -66,27 +67,6 @@ io.on('connection', (socket) => {
             console.log(`Number ${number} marked by player ${socket.id}`);
         } else {
             socket.emit('error', 'Not your turn or game not started');
-        }
-    });
-
-    socket.on('update_lines', ({ gameId, playerName, lines }) => {
-        const game = games[gameId];
-        if (game) {
-            const player = game.players.find(p => p.name === playerName);
-            if (player) {
-                player.lines = lines;
-                if (lines >= 5) {
-                    io.to(gameId).emit('bingo_ready', `${playerName} has completed BINGO! Press the button to win!`);
-                }
-            }
-        }
-    });
-
-    socket.on('bingo_pressed', ({ gameId, playerName }) => {
-        const game = games[gameId];
-        if (game) {
-            io.to(gameId).emit('game_ended', `${playerName} wins by pressing BINGO!`);
-            delete games[gameId];
         }
     });
 

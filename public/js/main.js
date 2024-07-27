@@ -71,6 +71,11 @@ socket.on('game_started', (players) => {
     generateBingoBoard();
     const playerName = document.getElementById('playerNameInput').value.trim();
     document.getElementById('playerInfo').textContent = `Player: ${playerName}`;
+    document.getElementById('bingoButton').addEventListener('click', () => {
+        const gameId = document.getElementById('gameIdInput').value.trim();
+        const playerName = document.getElementById('playerNameInput').value.trim();
+        socket.emit('bingo_pressed', { gameId, playerName });
+    });
 });
 
 socket.on('number_marked', ({ number, markerName }) => {
@@ -110,12 +115,6 @@ socket.on('bingo_ready', message => {
 
 socket.on('error', message => {
     alert(message);
-});
-
-document.getElementById('bingoButton').addEventListener('click', () => {
-    const gameId = document.getElementById('gameIdInput').value.trim();
-    const playerName = document.getElementById('playerNameInput').value.trim();
-    socket.emit('bingo_pressed', { gameId, playerName });
 });
 
 function updateStartButton() {
