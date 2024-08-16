@@ -14,7 +14,7 @@ Welcome to Bingo! This game allows anywhere from 2 to an infinite number of play
 - **Progress Tracking:** As players achieve lines on their cards, the corresponding letters (B, I, N, G, O) are displayed. Once all five lines are completed, the "BINGO!" button becomes active.
 - **User-friendly Interface:** The interface is designed to be intuitive and easy to use, suitable for players of all ages.
 
-## How to Play
+## How to Play (Will be deployed soon)
 1. **Joining the Game:**
    - Navigate to the game's URL using a web browser.
    - Create a code to start a new game session, or join an existing one!
